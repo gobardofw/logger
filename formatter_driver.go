@@ -13,5 +13,5 @@ func GregorianFormatter(t time.Time, format string) string {
 
 // JalaliFormatter jalali date formatter
 func JalaliFormatter(t time.Time, format string) string {
-	return ptime.Unix(t.Unix(), t.UnixNano(), ptime.Iran()).Format(format)
+	return ptime.Unix(t.Unix(), t.UnixNano(), ptime.Iran()).TimeFormat(format)
 }

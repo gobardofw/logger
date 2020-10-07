@@ -2,3 +2,5 @@ github.com/gobardofw/utils v0.0.0-20201006095337-f86f1bc04195 h1:Z4huCEfLBC4S/W+
 github.com/gobardofw/utils v0.0.0-20201006095337-f86f1bc04195/go.mod h1:3hBJBNoYUNsbFKd9gnS5LbTed2V+gJ3I2JON6f92wqg=
 github.com/yaa110/go-persian-calendar v0.5.0 h1:R6ADEJe2YXcLBVT7H/igb1tmLwr7SDAaVoDDdP0mmPE=
 github.com/yaa110/go-persian-calendar v0.5.0/go.mod h1:KaNCW2YgfpMb48BofaTT99u0hdKUILpHeGhqaZ6GgkQ=
+github.com/yaa110/go-persian-calendar v0.6.1 h1:g8HCQSCPDlifGYRLBYAiz00RcuFqfmtDMGFzyg4hBQY=
+github.com/yaa110/go-persian-calendar v0.6.1/go.mod h1:KaNCW2YgfpMb48BofaTT99u0hdKUILpHeGhqaZ6GgkQ=
