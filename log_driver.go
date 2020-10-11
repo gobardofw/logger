@@ -12,13 +12,13 @@ type logDriver struct {
 	typ        string
 	tags       []string
 	timeFormat string
-	writer     io.Writer
+	writers    []io.Writer
 	formatter  TimeFormatter
 }
 
-func (log *logDriver) init(tf string, w io.Writer, f TimeFormatter) {
+func (log *logDriver) init(tf string, f TimeFormatter, writers ...io.Writer) {
 	log.timeFormat = tf
-	log.writer = w
+	log.writers = writers
 	log.formatter = f
 }
 
@@ -38,19 +38,21 @@ func (log *logDriver) Tags(tags ...string) Log {
 
 // Print print message to writer
 func (log *logDriver) Print(format string, params ...interface{}) {
-	// Datetime
-	log.writer.Write([]byte(log.formatter(time.Now().UTC(), log.timeFormat)))
-	// Type
-	t := []rune(strings.ToUpper(log.typ))
-	if len(t) >= 5 {
-		t = t[0:5]
+	for _, writer := range log.writers {
+		// Datetime
+		writer.Write([]byte(log.formatter(time.Now().UTC(), log.timeFormat)))
+		// Type
+		t := []rune(strings.ToUpper(log.typ))
+		if len(t) >= 5 {
+			t = t[0:5]
+		}
+		writer.Write([]byte(fmt.Sprintf("%5s ", string(t))))
+		// Message
+		writer.Write([]byte(fmt.Sprintf(strings.ReplaceAll(format, "\n", ""), params...)))
+		// Tags
+		for _, tag := range log.tags {
+			writer.Write([]byte(fmt.Sprintf(" [%s]", tag)))
+		}
+		writer.Write([]byte("\n"))
 	}
-	log.writer.Write([]byte(fmt.Sprintf("%5s ", string(t))))
-	// Message
-	log.writer.Write([]byte(fmt.Sprintf(strings.ReplaceAll(format, "\n", ""), params...)))
-	// Tags
-	for _, tag := range log.tags {
-		log.writer.Write([]byte(fmt.Sprintf(" [%s]", tag)))
-	}
-	log.writer.Write([]byte("\n"))
 }

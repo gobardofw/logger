@@ -5,17 +5,17 @@ import (
 )
 
 // NewLog Create new log message instance
-func NewLog(tf string, w io.Writer, f TimeFormatter, typ string) Log {
+func NewLog(tf string, f TimeFormatter, typ string, writers ...io.Writer) Log {
 	log := new(logDriver)
-	log.init(tf, w, f)
+	log.init(tf, f, writers...)
 	log.Type(typ)
 	return log
 }
 
 // NewLogger create a new logger instance
-func NewLogger(tf string, w io.Writer, f TimeFormatter) Logger {
+func NewLogger(tf string, f TimeFormatter, writers ...io.Writer) Logger {
 	lgr := new(loggerDriver)
-	lgr.init(tf, w, f)
+	lgr.init(tf, f, writers...)
 	return lgr
 }
 

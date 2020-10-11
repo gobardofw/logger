@@ -9,19 +9,19 @@ import (
 // loggerDriver standard lgr using io.writer
 type loggerDriver struct {
 	timeFormat string
-	writer     io.Writer
+	writers    []io.Writer
 	formatter  TimeFormatter
 }
 
-func (lgr *loggerDriver) init(tf string, w io.Writer, f TimeFormatter) {
+func (lgr *loggerDriver) init(tf string, f TimeFormatter, writers ...io.Writer) {
 	lgr.timeFormat = tf
-	lgr.writer = w
+	lgr.writers = writers
 	lgr.formatter = f
 }
 
 func (lgr *loggerDriver) log() Log {
 	log := new(logDriver)
-	log.init(lgr.timeFormat, lgr.writer, lgr.formatter)
+	log.init(lgr.timeFormat, lgr.formatter, lgr.writers...)
 	return log
 }
 
@@ -58,10 +58,14 @@ func (lgr *loggerDriver) Divider(divider string, count uint8, title string) {
 	} else {
 		halfCount = halfCount / 2
 	}
-	lgr.writer.Write([]byte(strings.Repeat(divider, halfCount) + strings.ToUpper(title) + strings.Repeat(divider, halfCount) + "\n"))
+	for _, writer := range lgr.writers {
+		writer.Write([]byte(strings.Repeat(divider, halfCount) + strings.ToUpper(title) + strings.Repeat(divider, halfCount) + "\n"))
+	}
 }
 
 // Raw write raw message to output
 func (lgr *loggerDriver) Raw(format string, params ...interface{}) {
-	lgr.writer.Write([]byte(fmt.Sprintf(format, params...)))
+	for _, writer := range lgr.writers {
+		writer.Write([]byte(fmt.Sprintf(format, params...)))
+	}
 }
