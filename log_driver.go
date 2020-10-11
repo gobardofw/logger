@@ -46,7 +46,7 @@ func (log *logDriver) Print(format string, params ...interface{}) {
 		if len(t) >= 5 {
 			t = t[0:5]
 		}
-		writer.Write([]byte(fmt.Sprintf("%5s ", string(t))))
+		writer.Write([]byte(fmt.Sprintf("%6s ", string(t))))
 		// Message
 		writer.Write([]byte(fmt.Sprintf(strings.ReplaceAll(format, "\n", ""), params...)))
 		// Tags
